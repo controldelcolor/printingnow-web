@@ -640,9 +640,9 @@ function app() {
 
     initMapa() {
       this.map = L.map('map', { scrollWheelZoom: false }).setView([-35.675, -71.543], 4);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         maxZoom: 18,
-        attribution: '© OpenStreetMap'
+        attribution: '© OpenStreetMap contributors © CARTO'
       }).addTo(this.map);
       this.actualizarMapa();
     },
