@@ -28,8 +28,8 @@ class Command(BaseCommand):
         if errores:
             return
 
-        validos = [r for r in preview if r['_valido']]
-        invalidos = [r for r in preview if not r['_valido']]
+        validos = [r for r in preview if r['valido']]
+        invalidos = [r for r in preview if not r['valido']]
 
         self.stdout.write(f'\nArchivo procesado: {opts["archivo"]}')
         self.stdout.write(f'  · Filas totales:  {len(preview)}')
