@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -108,13 +109,9 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo -->
-      <a href="#inicio" class="flex items-center gap-2">
-        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cmyk-c via-cmyk-m to-cmyk-y shadow-md ring-2 ring-white"></div>
-        <div class="leading-tight">
-          <div class="font-bold text-slate-900 text-base md:text-lg tracking-tight">Control del Color</div>
-          <div class="font-script text-brand-600 text-base md:text-lg -mt-1">Printing Now</div>
-        </div>
-      </a>
+      <a href="#inicio" class="flex items-center">
+  <img src="{% static 'img/logo.png' %}" alt="Control del Color" class="h-12 w-auto">
+</a>
 
       <!-- Nav desktop -->
       <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-slate-700">
