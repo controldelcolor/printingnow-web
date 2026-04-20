@@ -105,7 +105,7 @@ def formatear_telefono(raw):
 def procesar_excel(archivo):
     """Lee el .xlsx y devuelve (lista_preview, lista_errores).
 
-    preview: lista de dicts por fila con valido, _warn, y los campos.
+    preview: lista de dicts por fila con valido, warn, y los campos.
     errores: lista de strings de errores globales (columna faltante, etc.)
     """
     errores = []
@@ -181,11 +181,11 @@ def procesar_excel(archivo):
             'eco_friendly': eco_raw in ('si', 'sí'),
             '_comuna_obj': comuna_obj,
             'valido': True,
-            '_warn': '',
+            'warn': '',
         }
         if not comuna_obj:
             row['valido'] = False
-            row['_warn']   = f"Comuna '{comuna_raw}' no encontrada"
+            row['warn']   = f"Comuna '{comuna_raw}' no encontrada"
         preview.append(row)
 
     return preview, errores
