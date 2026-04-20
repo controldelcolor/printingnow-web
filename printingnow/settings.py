@@ -79,11 +79,11 @@ WSGI_APPLICATION = 'printingnow.wsgi.application'
 # ─── Base de datos ──────────────────────────────────────────────────────────
 # Si existe DATABASE_URL (Railway con PostgreSQL), se usa.
 # Si no, SQLite local para desarrollo.
-DATABASE_URL = config('DATABASE_URL', default='')
+DATABASE_URL = os.environ.get('DATABASE_URL', '').strip()
 if DATABASE_URL:
     DATABASES = {
-        'default': dj_database_url.config(
-            default=DATABASE_URL,
+        'default': dj_database_url.parse(
+            DATABASE_URL,
             conn_max_age=600,
             ssl_require=False,
         )
