@@ -58,14 +58,14 @@
         </thead>
         <tbody>
           {% for r in preview %}
-            <tr style="{% if not r._valido %}background:#fef3c7{% endif %};border-bottom:1px solid #f0f0f0">
+            <tr style="{% if not r.valido %}background:#fef3c7{% endif %};border-bottom:1px solid #f0f0f0">
               <td style="padding:6px">{{ forloop.counter }}</td>
               <td style="padding:6px;font-weight:500">{{ r.razon_social }}</td>
               <td style="padding:6px">{{ r.comuna }}</td>
               <td style="padding:6px;color:#666">{{ r.region }}</td>
               <td style="padding:6px;color:#666;white-space:nowrap">{{ r.telefono|default:"—" }}</td>
               <td style="padding:6px">
-                {% if r._valido %}
+                {% if r.valido %}
                   <span style="color:#16a34a;font-weight:600">✓ OK</span>
                 {% else %}
                   <span style="color:#d97706;font-weight:600">⚠ {{ r._warn }}</span>
