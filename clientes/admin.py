@@ -167,7 +167,7 @@ class ClienteAdmin(admin.ModelAdmin):
                 # Crear los clientes válidos
                 creados, omitidos = 0, 0
                 for row in preview:
-                    if not row.get('_valido'):
+                    if not row.get('valido'):
                         omitidos += 1
                         continue
                     # Evitar duplicados por razón social + comuna
@@ -198,7 +198,7 @@ class ClienteAdmin(admin.ModelAdmin):
             # Mostrar preview
             context['preview'] = preview
             context['errores'] = errores
-            context['validos'] = sum(1 for r in preview if r.get('_valido'))
+            context['validos'] = sum(1 for r in preview if r.get('valido'))
             context['archivo_nombre'] = archivo.name
 
         return render(request, 'admin/clientes/importar_excel.html', context)
