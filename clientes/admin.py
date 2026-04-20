@@ -16,6 +16,7 @@ from .importer import procesar_excel
 class RegionAdmin(admin.ModelAdmin):
     list_display  = ('nombre', 'orden', 'total_comunas', 'total_clientes')
     list_editable = ('orden',)
+    search_fields = ('nombre',)
     ordering = ('orden',)
 
     @admin.display(description='Comunas')
