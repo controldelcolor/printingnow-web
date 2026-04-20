@@ -1,1 +1,1 @@
-web: python manage.py migrate --noinput && python manage.py collectstatic --noinput && python manage.py cargar_regiones && python manage.py asegurar_admin && gunicorn printingnow.wsgi --log-file - --bind 0.0.0.0:$PORT
+web: python manage.py migrate --noinput && python manage.py collectstatic --noinput && python manage.py cargar_regiones && (python manage.py createsuperuser --noinput 2>/dev/null || echo "Superuser ya existe o no hay variables DJANGO_SUPERUSER_*") && gunicorn printingnow.wsgi --log-file - --bind 0.0.0.0:$PORT
