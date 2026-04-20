@@ -37,7 +37,7 @@ class Command(BaseCommand):
         if invalidos:
             self.stdout.write(self.style.WARNING(f'  · Con advertencia: {len(invalidos)}'))
             for r in invalidos[:5]:
-                self.stdout.write(f'    - {r["razon_social"]}: {r["_warn"]}')
+                self.stdout.write(f'    - {r["razon_social"]}: {r["warn"]}')
             if len(invalidos) > 5:
                 self.stdout.write(f'    ... y {len(invalidos)-5} más')
 
