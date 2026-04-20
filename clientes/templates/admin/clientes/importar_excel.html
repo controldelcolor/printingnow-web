@@ -1,0 +1,93 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+  &rsaquo; <a href="{% url 'admin:app_list' app_label='clientes' %}">Clientes</a>
+  &rsaquo; <a href="{% url 'admin:clientes_cliente_changelist' %}">Clientes</a>
+  &rsaquo; Importar Excel
+</div>
+{% endblock %}
+
+{% block content %}
+<h1>📥 Importar clientes desde Excel</h1>
+
+{% if errores %}
+  <ul class="messagelist">
+    {% for e in errores %}<li class="error">{{ e }}</li>{% endfor %}
+  </ul>
+{% endif %}
+
+{% if not preview %}
+  <div style="background:#fff;padding:24px;border:1px solid #ddd;border-radius:8px;max-width:700px;margin-top:20px">
+    <p style="margin-top:0">Sube un archivo <code>.xlsx</code> con los clientes. El sistema mostrará una vista previa antes de confirmar.</p>
+    <p><strong>Columnas esperadas:</strong> Razón social · Dirección · Comuna · Contacto · Teléfono · Equipos · EcoFriendly (Sí/No)</p>
+
+    <form method="post" enctype="multipart/form-data" style="margin-top:20px">
+      {% csrf_token %}
+      <input type="file" name="archivo" accept=".xlsx,.xls" required style="padding:8px">
+      <button type="submit" class="default" style="margin-left:8px">Previsualizar</button>
+    </form>
+
+    <div style="margin-top:16px;padding:12px;background:#f0f7ff;border-left:4px solid #1d52ec;font-size:13px">
+      <strong>Consejo:</strong> la primera vez se pueden rechazar filas por comunas mal escritas (ej: "Anfofagasta" → "Antofagasta").
+      Los duplicados (misma razón social + comuna) se omiten automáticamente.
+    </div>
+  </div>
+{% else %}
+  <div style="background:#fff;padding:24px;border:1px solid #ddd;border-radius:8px;margin-top:20px">
+    <h2 style="margin-top:0">Vista previa — {{ archivo_nombre }}</h2>
+    <p>
+      <strong>{{ preview|length }}</strong> filas detectadas ·
+      <strong style="color:#16a34a">{{ validos }}</strong> válidas ·
+      <strong style="color:#dc2626">{{ preview|length|add:"-"|add:validos }}</strong> con advertencia
+    </p>
+
+    <div style="max-height:500px;overflow:auto;border:1px solid #eee;border-radius:6px;margin-top:16px">
+      <table style="width:100%;font-size:13px;border-collapse:collapse">
+        <thead style="background:#f5f5f5;position:sticky;top:0">
+          <tr>
+            <th style="padding:8px;text-align:left">#</th>
+            <th style="padding:8px;text-align:left">Razón social</th>
+            <th style="padding:8px;text-align:left">Comuna</th>
+            <th style="padding:8px;text-align:left">Región</th>
+            <th style="padding:8px;text-align:left">Teléfono</th>
+            <th style="padding:8px;text-align:left">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in preview %}
+            <tr style="{% if not r._valido %}background:#fef3c7{% endif %};border-bottom:1px solid #f0f0f0">
+              <td style="padding:6px">{{ forloop.counter }}</td>
+              <td style="padding:6px;font-weight:500">{{ r.razon_social }}</td>
+              <td style="padding:6px">{{ r.comuna }}</td>
+              <td style="padding:6px;color:#666">{{ r.region }}</td>
+              <td style="padding:6px;color:#666;white-space:nowrap">{{ r.telefono|default:"—" }}</td>
+              <td style="padding:6px">
+                {% if r._valido %}
+                  <span style="color:#16a34a;font-weight:600">✓ OK</span>
+                {% else %}
+                  <span style="color:#d97706;font-weight:600">⚠ {{ r._warn }}</span>
+                {% endif %}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" style="margin-top:20px;display:flex;gap:8px;align-items:center">
+      {% csrf_token %}
+      {# re-enviar el archivo con confirmar=1 #}
+      <input type="hidden" name="confirmar" value="1">
+      <input type="file" name="archivo" accept=".xlsx,.xls" required>
+      <button type="submit" class="default" style="background:#16a34a">✓ Confirmar e importar {{ validos }}</button>
+      <a href="{% url 'admin:clientes_cliente_changelist' %}" style="padding:8px 16px">Cancelar</a>
+    </form>
+    <p style="color:#888;font-size:12px;margin-top:8px">
+      Nota: vuelve a seleccionar el mismo archivo para confirmar (limitación del navegador, los archivos no se pueden persistir entre requests).
+    </p>
+  </div>
+{% endif %}
+{% endblock %}
