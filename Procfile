@@ -1,1 +1,1 @@
-web: python manage.py makemigrations clientes --noinput && python manage.py migrate --noinput && python manage.py collectstatic --noinput && python manage.py cargar_regiones && gunicorn printingnow.wsgi --log-file - --bind 0.0.0.0:$PORT
+web: python manage.py migrate --noinput && python manage.py collectstatic --noinput && python manage.py cargar_regiones && gunicorn printingnow.wsgi --log-file - --bind 0.0.0.0:$PORT
