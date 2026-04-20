@@ -241,3 +241,29 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS(
             f'✓ Listo. Regiones: {Region.objects.count()} · Comunas: {Comuna.objects.count()}'
         ))
+# ── Crear/actualizar superusuario desde variables de entorno ─────────
+        import os
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+        username = os.environ.get('DJANGO_SUPERUSER_USERNAME', '').strip()
+        email    = os.environ.get('DJANGO_SUPERUSER_EMAIL', '').strip()
+        password = os.environ.get('DJANGO_SUPERUSER_PASSWORD', '').strip()
+        if username and password:
+            user, created = User.objects.get_or_create(
+                username=username,
+                defaults={'email': email, 'is_staff': True, 'is_superuser': True},
+            )
+            user.email = email or user.email
+            user.is_staff = True
+            user.is_superuser = True
+            user.set_password(password)
+            user.save()
+            action = 'CREADO' if created else 'actualizado (contraseña reseteada)'
+            self.stdout.write(self.style.SUCCESS(
+                f'✓ Superusuario "{username}" {action}.'
+            ))
+        else:
+            self.stdout.write(self.style.WARNING(
+                'DJANGO_SUPERUSER_USERNAME o DJANGO_SUPERUSER_PASSWORD faltan — '
+                'no se creó admin.'
+            ))
