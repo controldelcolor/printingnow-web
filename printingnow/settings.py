@@ -129,3 +129,14 @@ LOGIN_REDIRECT_URL = '/admin/'
 
 # El nombre del admin site se configura en clientes/apps.py (ready()),
 # nunca en settings.py porque causa AppRegistryNotReady durante el build.
+
+# ─── Seguridad HTTPS (producción) ─────────────────────────────────────────
+if not DEBUG:
+    SECURE_SSL_REDIRECT          = True
+    SECURE_HSTS_SECONDS          = 31536000  # 1 año
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD          = True
+    SECURE_CONTENT_TYPE_NOSNIFF  = True
+    SESSION_COOKIE_SECURE        = True
+    CSRF_COOKIE_SECURE           = True
+    X_FRAME_OPTIONS              = 'DENY'
