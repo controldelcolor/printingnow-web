@@ -720,6 +720,28 @@ window.__verFicha = function(id) {
     if (c) ctx.abrirFicha(c);
   }
 };
+  function clienteRotador() {
+  return {
+    clientes: [],
+    cliente: null,
+    indice: 0,
+    init() {
+      fetch('/api/clientes/')
+        .then(r => r.json())
+        .then(data => {
+          this.clientes = (data.clientes || []).filter(c => c.telefono);
+          if (this.clientes.length > 0) {
+            this.cliente = this.clientes[0];
+            setInterval(() => this.rotar(), 4000);
+          }
+        });
+    },
+    rotar() {
+      this.indice = (this.indice + 1) % this.clientes.length;
+      this.cliente = this.clientes[this.indice];
+    }
+  }
+}
 </script>
 
 </body>
